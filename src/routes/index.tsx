@@ -229,7 +229,7 @@ function Home() {
             <div className="space-y-4 py-6 text-center">
               <Pill className="mx-auto size-8 text-primary" />
               <p className="text-base text-muted-foreground">
-                아래 마이크 버튼을 누르고 궁금하신 건강 이야기를 말씀해 주세요.
+                아래 마이크 버튼을 누르고 궁금한 점이나 건강 이야기를 말씀해 주세요.
               </p>
               <div className="flex flex-col gap-2">
                 {SUGGESTIONS.map((s) => (
