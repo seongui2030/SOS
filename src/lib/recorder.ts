@@ -10,7 +10,7 @@ function downsample(input: Float32Array, from: number, to: number) {
     const start = Math.floor(i * ratio);
     const end = Math.min(Math.floor((i + 1) * ratio), input.length);
     let sum = 0;
-    for (let j = start; j < end; j++) sum += input[j];
+    for (let j = start; j < end; j++) sum += input[j] ?? 0;
     out[i] = sum / Math.max(1, end - start);
   }
   return out;
@@ -45,7 +45,7 @@ function encodeWav(chunks: Float32Array[], sampleRate: number) {
   view.setUint32(40, samples.length * 2, true);
   let pos = 44;
   for (let i = 0; i < samples.length; i++) {
-    const s = Math.max(-1, Math.min(1, samples[i]));
+    const s = Math.max(-1, Math.min(1, samples[i] ?? 0));
     view.setInt16(pos, s < 0 ? s * 0x8000 : s * 0x7fff, true);
     pos += 2;
   }
@@ -69,7 +69,7 @@ export async function startRecording(): Promise<Recorder> {
     const data = e.inputBuffer.getChannelData(0);
     chunks.push(new Float32Array(data));
     let peak = 0;
-    for (let i = 0; i < data.length; i += 32) peak = Math.max(peak, Math.abs(data[i]));
+    for (let i = 0; i < data.length; i += 32) peak = Math.max(peak, Math.abs(data[i] ?? 0));
     level = peak;
   };
   source.connect(node);
