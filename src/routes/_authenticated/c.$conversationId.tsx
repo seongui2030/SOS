@@ -296,6 +296,55 @@ function ConversationPage() {
                   <MessageSquarePlus className="size-4" /> 새 대화 시작
                 </Button>
 
+                <div className="space-y-2 rounded-2xl bg-secondary/60 p-3">
+                  <p className="text-xs font-medium text-muted-foreground">기록 내보내기</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant="outline"
+                      className="h-11 bg-card"
+                      disabled={exporting !== null}
+                      onClick={() => void handleExport("csv", "current")}
+                    >
+                      {exporting === "csv-current" ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <FileDown className="size-4" />
+                      )}
+                      이 대화 CSV
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="h-11 bg-card"
+                      disabled={exporting !== null}
+                      onClick={() => void handleExport("pdf", "current")}
+                    >
+                      {exporting === "pdf-current" ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <FileText className="size-4" />
+                      )}
+                      이 대화 PDF
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="h-10 text-xs"
+                      disabled={exporting !== null}
+                      onClick={() => void handleExport("csv", "all")}
+                    >
+                      전체 CSV
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      className="h-10 text-xs"
+                      disabled={exporting !== null}
+                      onClick={() => void handleExport("pdf", "all")}
+                    >
+                      전체 PDF
+                    </Button>
+                  </div>
+                </div>
+
+
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
