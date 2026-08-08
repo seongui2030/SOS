@@ -91,12 +91,33 @@ export function exportRowsToPdf(rows: ExportRow[], title: string) {
   <p class="sub">내보낸 시각: ${escapeHtml(new Date().toLocaleString("ko-KR"))} · 총 ${rows.length}건</p>
   ${body || '<p class="content">저장된 대화가 없습니다.</p>'}
   <footer>이 기록은 참고용입니다. 진단과 처방은 반드시 의사·약사와 상담하세요.</footer>
-  <script>window.onload = function () { window.focus(); window.print(); };</script>
 </body></html>`;
 
-  const win = window.open("", "_blank");
-  if (!win) return false;
-  win.document.write(html);
-  win.document.close();
-  return true;
+  // Print via a hidden iframe: popups are blocked inside the preview frame.
+  try {
+    const frame = document.createElement("iframe");
+    frame.setAttribute("aria-hidden", "true");
+    frame.style.position = "fixed";
+    frame.style.right = "0";
+    frame.style.bottom = "0";
+    frame.style.width = "0";
+    frame.style.height = "0";
+    frame.style.border = "0";
+    frame.srcdoc = html;
+    frame.onload = () => {
+      try {
+        frame.contentWindow?.focus();
+        frame.contentWindow?.print();
+      } catch {
+        downloadBlob(new Blob([html], { type: "text/html;charset=utf-8" }), `${title}.html`);
+      }
+      setTimeout(() => frame.remove(), 60000);
+    };
+    document.body.appendChild(frame);
+    return true;
+  } catch {
+    downloadBlob(new Blob([html], { type: "text/html;charset=utf-8" }), `${title}.html`);
+    return true;
+  }
 }
+
