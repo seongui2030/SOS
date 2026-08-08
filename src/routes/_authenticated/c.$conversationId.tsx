@@ -87,6 +87,8 @@ function ConversationPage() {
   const [hits, setHits] = useState<SearchHit[] | null>(null);
   const [searching, setSearching] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
+  const [exporting, setExporting] = useState<string | null>(null);
+
 
   const loadConversations = useCallback(async () => {
     const { data, error } = await supabase
