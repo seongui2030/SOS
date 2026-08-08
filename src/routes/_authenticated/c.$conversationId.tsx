@@ -244,8 +244,7 @@ function ConversationPage() {
     toast.success("인쇄 창에서 'PDF로 저장'을 선택하세요.");
   };
 
-  const titleFor = (id: string) =>
-    conversations.find((c) => c.id === id)?.title ?? "저장된 대화";
+
 
   // Give a saved conversation a readable title from its first question.
   const maybeTitle = useCallback(async () => {
