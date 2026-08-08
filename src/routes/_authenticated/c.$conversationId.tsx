@@ -196,6 +196,57 @@ function ConversationPage() {
   const titleFor = (id: string) =>
     conversations.find((c) => c.id === id)?.title ?? "저장된 대화";
 
+  const fetchExportRows = useCallback(
+    async (scope: "current" | "all"): Promise<ExportRow[] | null> => {
+      let request = supabase
+        .from("messages")
+        .select("role, content, created_at, emergency_keywords, conversation_id")
+        .order("created_at", { ascending: true });
+      if (scope === "current") request = request.eq("conversation_id", conversationId);
+      const { data, error } = await request;
+      if (error) {
+        toast.error("기록을 불러오지 못했습니다.");
+        return null;
+      }
+      const titles = new Map(conversations.map((c) => [c.id, c.title]));
+      return (data ?? []).map((row) => ({
+        conversation: titles.get(row.conversation_id) ?? "저장된 대화",
+        role: row.role,
+        content: row.content,
+        created_at: row.created_at,
+        emergency_keywords: row.emergency_keywords ?? [],
+      }));
+    },
+    [conversationId, conversations],
+  );
+
+  const handleExport = async (format: "csv" | "pdf", scope: "current" | "all") => {
+    setExporting(`${format}-${scope}`);
+    const rows = await fetchExportRows(scope);
+    setExporting(null);
+    if (!rows) return;
+    if (rows.length === 0) {
+      toast.error("내보낼 대화 기록이 없습니다.");
+      return;
+    }
+    const label = scope === "current" ? titleFor(conversationId) : "전체 대화 기록";
+    const stamp = new Date().toISOString().slice(0, 10);
+    if (format === "csv") {
+      exportRowsToCsv(rows, `말벗케어_${scope === "current" ? "대화" : "전체"}_${stamp}.csv`);
+      toast.success("CSV 파일을 저장했습니다.");
+      return;
+    }
+    const opened = exportRowsToPdf(rows, `말벗 케어 · ${label}`);
+    if (!opened) {
+      toast.error("팝업이 차단되었습니다. 브라우저에서 팝업을 허용해 주세요.");
+      return;
+    }
+    toast.success("인쇄 창에서 'PDF로 저장'을 선택하세요.");
+  };
+
+  const titleFor = (id: string) =>
+    conversations.find((c) => c.id === id)?.title ?? "저장된 대화";
+
   // Give a saved conversation a readable title from its first question.
   const maybeTitle = useCallback(async () => {
     await loadConversations();
