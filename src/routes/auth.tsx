@@ -44,6 +44,20 @@ function AuthPage() {
     });
   }, [navigate]);
 
+  const recordUser = async () => {
+    const { data } = await supabase.auth.getUser();
+    const user = data.user;
+    if (!user) return;
+    await supabase.from("users").upsert(
+      {
+        id: user.id,
+        email: user.email ?? null,
+        display_name: (user.user_metadata?.["full_name"] as string | undefined) ?? null,
+      },
+      { onConflict: "id" },
+    );
+  };
+
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
@@ -55,10 +69,12 @@ function AuthPage() {
           options: { emailRedirectTo: window.location.origin },
         });
         if (error) throw error;
+        await recordUser();
         toast.success("가입이 완료되었습니다. 이제 이용하실 수 있어요.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        await recordUser();
       }
       void navigate({ to: "/" });
     } catch (error) {
@@ -67,6 +83,7 @@ function AuthPage() {
       setLoading(false);
     }
   };
+
 
   const google = async () => {
     setLoading(true);
@@ -79,6 +96,7 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
+    await recordUser();
     void navigate({ to: "/" });
   };
 
