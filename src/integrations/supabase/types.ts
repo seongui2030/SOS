@@ -38,6 +38,45 @@ export type Database = {
         }
         Relationships: []
       }
+      healths: {
+        Row: {
+          age: number
+          bmi: number
+          bmr: number
+          created_at: string
+          gender: string
+          height_cm: number
+          id: string
+          updated_at: string
+          user_id: string
+          weight_kg: number
+        }
+        Insert: {
+          age: number
+          bmi: number
+          bmr: number
+          created_at?: string
+          gender: string
+          height_cm: number
+          id?: string
+          updated_at?: string
+          user_id: string
+          weight_kg: number
+        }
+        Update: {
+          age?: number
+          bmi?: number
+          bmr?: number
+          created_at?: string
+          gender?: string
+          height_cm?: number
+          id?: string
+          updated_at?: string
+          user_id?: string
+          weight_kg?: number
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           content: string
@@ -75,6 +114,30 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      users: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
     }
     Views: {
