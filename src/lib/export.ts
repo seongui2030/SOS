@@ -121,3 +121,33 @@ export function exportRowsToPdf(rows: ExportRow[], title: string) {
   }
 }
 
+export type HealthRow = {
+  created_at: string;
+  height_cm: number;
+  weight_kg: number;
+  gender: string;
+  age: number;
+  bmi: number;
+  bmr: number;
+};
+
+export function exportHealthsToCsv(rows: HealthRow[], filename: string) {
+  const header = ["측정일", "키(cm)", "몸무게(kg)", "성별", "나이", "BMI", "BMR(kcal)"];
+  const genderLabel = (value: string) => (value === "female" ? "여성" : value === "male" ? "남성" : value);
+  const lines = [
+    header.map(csvCell).join(","),
+    ...rows.map((row) =>
+      [
+        csvCell(new Date(row.created_at).toLocaleString("ko-KR")),
+        csvCell(String(row.height_cm)),
+        csvCell(String(row.weight_kg)),
+        csvCell(genderLabel(row.gender)),
+        csvCell(String(row.age)),
+        csvCell(String(row.bmi)),
+        csvCell(String(row.bmr)),
+      ].join(","),
+    ),
+  ];
+  downloadBlob(new Blob(["\uFEFF", lines.join("\r\n")], { type: "text/csv;charset=utf-8" }), filename);
+}
+
