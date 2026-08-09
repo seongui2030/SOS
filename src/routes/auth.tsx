@@ -96,6 +96,7 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
+    await recordUser();
     void navigate({ to: "/" });
   };
 
