@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import {
   FileDown,
   FileText,
-  HeartPulse,
   History,
   LogOut,
   MessageSquarePlus,
@@ -24,6 +23,7 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { VoiceAssistant, type Turn } from "@/components/VoiceAssistant";
+import { HealthDialog } from "@/components/HealthDialog";
 import { exportRowsToCsv, exportRowsToPdf, type ExportRow } from "@/lib/export";
 
 
