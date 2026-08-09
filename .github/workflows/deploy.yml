@@ -3,9 +3,8 @@ name: Deploy Web Application
 on:
   push:
     branches:
-      - main # main 브랜치에 코드가 push될 때 자동 배포
+      - main
 
-# GitHub Pages 배포 권한 설정
 permissions:
   contents: write
 
@@ -14,31 +13,41 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 저장소 코드 가져오기
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Node.js 환경 설정
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'npm'
 
-      # 3. 의존성 패키지 설치
       - name: Install dependencies
         run: npm install
 
-      # 4. GitHub Secrets 환경 변수를 주입하여 프로젝트 빌드
+      # TanStack Start 정적 빌드 및 GitHub Pages subpath 설정 주입
       - name: Build project
         env:
           VITE_KAKAO_JAVASCRIPT_KEY: ${{ secrets.VITE_KAKAO_JAVASCRIPT_KEY }}
           VITE_KAKAO_REST_API_KEY: ${{ secrets.VITE_KAKAO_REST_API_KEY }}
+          VITE_BASE_URL: /health-companion-ai/
         run: npm run build
 
-      # 5. 빌드 결과물(dist)을 GitHub Pages로 배포하는 추가 액션 (Deploy Step)
+      # 빌드 후 생성된 Output 폴더 구조 확인 (디버깅용)
+      - name: Check build output directory
+        run: |
+          if [ -d ".output/public" ]; then
+            echo "BUILD_DIR=.output/public" >> $GITHUB_ENV
+          elif [ -d "dist/client" ]; then
+            echo "BUILD_DIR=dist/client" >> $GITHUB_ENV
+          else
+            echo "BUILD_DIR=dist" >> $GITHUB_ENV
+          fi
+
+      # GitHub Pages 배포
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist # Vite 기본 빌드 폴더명 (CRA인 경우 ./build 로 변경)
+          publish_dir: ${{ env.BUILD_DIR }}
+          enable_jekyll: false
