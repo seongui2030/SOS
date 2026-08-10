@@ -40,40 +40,40 @@ export type Database = {
       }
       healths: {
         Row: {
-          age: number
-          bmi: number
-          bmr: number
+          age: number | null
+          bmi: number | null
+          bmr: number | null
           created_at: string
-          gender: string
-          height_cm: number
+          gender: string | null
+          height_cm: number | null
           id: string
           updated_at: string
           user_id: string
-          weight_kg: number
+          weight_kg: number | null
         }
         Insert: {
-          age: number
-          bmi: number
-          bmr: number
+          age?: number | null
+          bmi?: number | null
+          bmr?: number | null
           created_at?: string
-          gender: string
-          height_cm: number
+          gender?: string | null
+          height_cm?: number | null
           id?: string
           updated_at?: string
           user_id: string
-          weight_kg: number
+          weight_kg?: number | null
         }
         Update: {
-          age?: number
-          bmi?: number
-          bmr?: number
+          age?: number | null
+          bmi?: number | null
+          bmr?: number | null
           created_at?: string
-          gender?: string
-          height_cm?: number
+          gender?: string | null
+          height_cm?: number | null
           id?: string
           updated_at?: string
           user_id?: string
-          weight_kg?: number
+          weight_kg?: number | null
         }
         Relationships: []
       }
@@ -114,30 +114,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      users: {
-        Row: {
-          created_at: string
-          display_name: string | null
-          email: string | null
-          id: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          display_name?: string | null
-          email?: string | null
-          id: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          display_name?: string | null
-          email?: string | null
-          id?: string
-          updated_at?: string
-        }
-        Relationships: []
       }
     }
     Views: {
