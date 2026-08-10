@@ -1,1 +1,0 @@
-import{c as e}from"./index-C1ZZXS7b.js";var t=e(),n=()=>(0,t.jsx)(`main`,{className:`flex min-h-screen items-center justify-center p-6 text-center`,children:(0,t.jsx)(`p`,{className:`text-muted-foreground`,children:`대화를 찾을 수 없습니다.`})});export{n as notFoundComponent};
