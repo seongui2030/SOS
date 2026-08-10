@@ -9,10 +9,20 @@ import {
   Search,
   Trash2,
   Loader2,
+  User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -81,6 +91,9 @@ function ConversationPage() {
   const navigate = useNavigate();
 
   const [userId, setUserId] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [userAvatar, setUserAvatar] = useState<string | null>(null);
   const [turns, setTurns] = useState<Turn[] | null>(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [query, setQuery] = useState("");
@@ -103,7 +116,14 @@ function ConversationPage() {
   }, []);
 
   useEffect(() => {
-    void supabase.auth.getUser().then(({ data }) => setUserId(data.user?.id ?? null));
+    void supabase.auth.getUser().then(({ data }) => {
+      const user = data.user;
+      if (!user) return;
+      setUserId(user.id);
+      setUserEmail(user.email ?? null);
+      setUserName((user.user_metadata?.["full_name"] as string | undefined) ?? null);
+      setUserAvatar((user.user_metadata?.["avatar_url"] as string | undefined) ?? null);
+    });
   }, []);
 
   useEffect(() => {
@@ -278,6 +298,42 @@ function ConversationPage() {
             <h1 className="text-xl font-bold tracking-tight text-foreground">말벗 케어</h1>
             <p className="text-xs text-muted-foreground">{titleFor(conversationId)}</p>
           </div>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="rounded-full" aria-label="내 프로필">
+                <Avatar className="size-8">
+                  <AvatarImage src={userAvatar ?? undefined} alt={userName ?? userEmail ?? "사용자"} />
+                  <AvatarFallback className="bg-primary/10 text-primary">
+                    {userName ? (
+                      userName.charAt(0)
+                    ) : userEmail ? (
+                      userEmail.charAt(0).toUpperCase()
+                    ) : (
+                      <User className="size-4" />
+                    )}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium text-foreground">{userName ?? "사용자"}</p>
+                  <p className="text-xs text-muted-foreground">{userEmail}</p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={async () => {
+                  await supabase.auth.signOut();
+                  void navigate({ to: "/auth" });
+                }}
+              >
+                <LogOut className="mr-2 size-4" /> 로그아웃
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <Sheet open={panelOpen} onOpenChange={setPanelOpen}>
             <SheetTrigger asChild>
