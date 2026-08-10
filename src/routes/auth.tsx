@@ -1,13 +1,14 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { HeartPulse, Loader2 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -19,13 +20,23 @@ export const Route = createFileRoute("/auth")({
         content:
           "말벗 케어에 로그인하면 음성 대화 기록이 안전하게 저장되어 언제든 다시 보고 검색할 수 있습니다.",
       },
-      { property: "og:title", content: "로그인 · 말벗 케어" },
+      {
+        property: "og:title",
+        content: "로그인 · 말벗 케어",
+      },
       {
         property: "og:description",
-        content: "로그인하면 음성 건강 상담 기록이 저장되고 검색할 수 있습니다.",
+        content:
+          "로그인하면 음성 건강 상담 기록이 저장되고 검색할 수 있습니다.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
     ],
   }),
   component: AuthPage,
@@ -33,6 +44,7 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
+
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,78 +52,103 @@ function AuthPage() {
 
   useEffect(() => {
     void supabase.auth.getSession().then(({ data }) => {
-      if (data.session) void navigate({ to: "/" });
+      if (data.session) {
+        void navigate({ to: "/" });
+      }
     });
   }, [navigate]);
 
   const recordUser = async () => {
     const { data } = await supabase.auth.getUser();
     const user = data.user;
+
     if (!user) return;
-    await supabase
-      .from("users" as any)
-      .upsert(
-        {
-          id: user.id,
-          email: user.email ?? null,
-          display_name: (user.user_metadata?.["full_name"] as string | undefined) ?? null,
-        } as any,
-        { onConflict: "id" },
-      );
+
+    await supabase.from("users").upsert(
+      {
+        id: user.id,
+        email: user.email ?? null,
+        display_name:
+          (user.user_metadata?.full_name as string | undefined) ?? null,
+      },
+      {
+        onConflict: "id",
+      },
+    );
   };
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     setLoading(true);
+
     try {
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: window.location.origin },
+          options: {
+            emailRedirectTo: window.location.origin,
+          },
         });
+
         if (error) throw error;
+
         await recordUser();
-        toast.success("가입이 완료되었습니다. 이제 이용하실 수 있어요.");
+
+        toast.success("가입이 완료되었습니다.");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+
         if (error) throw error;
+
         await recordUser();
+
+        toast.success("로그인되었습니다.");
       }
+
       void navigate({ to: "/" });
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "로그인에 실패했습니다.");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "로그인에 실패했습니다.",
+      );
     } finally {
       setLoading(false);
     }
   };
 
-
   const google = async () => {
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth`,
+      },
     });
-    if (result.error) {
+
+    if (error) {
       setLoading(false);
-      toast.error("구글 로그인에 실패했습니다.");
-      return;
+      toast.error(error.message);
     }
-    if (result.redirected) return;
-    await recordUser();
-    void navigate({ to: "/" });
   };
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-5 py-10">
+    <main className="container mx-auto flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-md space-y-6">
-        <div className="flex flex-col items-center gap-3 text-center">
-          <span className="flex size-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-soft">
-            <HeartPulse className="size-7" />
-          </span>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">말벗 케어</h1>
-          <p className="text-sm text-muted-foreground">
-            로그인하면 음성 상담 기록이 저장되어 언제든 다시 듣고 검색할 수 있어요.
+        <div className="text-center">
+          <HeartPulse className="mx-auto mb-4 h-12 w-12 text-primary" />
+
+          <h1 className="text-3xl font-bold">말벗 케어</h1>
+
+          <p className="mt-2 text-muted-foreground">
+            로그인하면 음성 상담 기록이 저장되어 언제든 다시 듣고
+            검색할 수 있어요.
           </p>
         </div>
 
@@ -119,32 +156,50 @@ function AuthPage() {
           <form className="space-y-4" onSubmit={submit}>
             <div className="space-y-2">
               <Label htmlFor="email">이메일</Label>
+
               <Input
                 id="email"
                 type="email"
                 required
                 autoComplete="email"
                 value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
                 className="h-12"
               />
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="password">비밀번호</Label>
+
               <Input
                 id="password"
                 type="password"
                 required
                 minLength={6}
-                autoComplete={mode === "signup" ? "new-password" : "current-password"}
+                autoComplete={
+                  mode === "signup"
+                    ? "new-password"
+                    : "current-password"
+                }
                 value={password}
-                onChange={(event) => setPassword(event.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 className="h-12"
               />
             </div>
-            <Button type="submit" size="lg" className="h-12 w-full" disabled={loading}>
-              {loading && <Loader2 className="size-4 animate-spin" />}
-              {mode === "signup" ? "가입하고 시작하기" : "로그인"}
+
+            <Button
+              type="submit"
+              size="lg"
+              className="h-12 w-full"
+              disabled={loading}
+            >
+              {loading && (
+                <Loader2 className="size-4 animate-spin" />
+              )}
+
+              {mode === "signup"
+                ? "가입하고 시작하기"
+                : "로그인"}
             </Button>
           </form>
 
@@ -156,7 +211,11 @@ function AuthPage() {
             disabled={loading}
             onClick={() => void google()}
           >
-            <svg className="size-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              className="size-5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                 fill="#4285F4"
@@ -174,15 +233,24 @@ function AuthPage() {
                 fill="#EA4335"
               />
             </svg>
+
             구글 계정으로 계속하기
           </Button>
 
           <button
             type="button"
             className="text-sm text-muted-foreground hover:underline"
-            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            onClick={() =>
+              setMode(
+                mode === "signin"
+                  ? "signup"
+                  : "signin",
+              )
+            }
           >
-            {mode === "signin" ? "처음이신가요? 새로 가입하기" : "이미 계정이 있어요, 로그인하기"}
+            {mode === "signin"
+              ? "처음이신가요? 새로 가입하기"
+              : "이미 계정이 있어요, 로그인하기"}
           </button>
         </Card>
       </div>
