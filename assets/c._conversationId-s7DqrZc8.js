@@ -1,0 +1,1 @@
+import{c as e}from"./index-C_VQbBBW.js";var t=e(),n=()=>(0,t.jsx)(`main`,{className:`flex min-h-screen items-center justify-center p-6 text-center`,children:(0,t.jsx)(`p`,{className:`text-muted-foreground`,children:`대화를 불러오지 못했습니다. 새로고침해 주세요.`})});export{n as errorComponent};
