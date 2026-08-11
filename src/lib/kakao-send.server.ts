@@ -1,7 +1,7 @@
 /** 카카오 REST(Message) API 호출 – 서버 전용 */
 
 export type Receiver = { name: string; relation: string; uuid?: string | null };
-export type SendResult = { name: string; relation: string; channel: "friend" | "memo"; ok: boolean; error?: string };
+export type SendResult = { name: string; relation: string; channel: "friend" | "memo"; ok: boolean; error?: string | undefined };
 
 const KAPI = "https://kapi.kakao.com";
 
