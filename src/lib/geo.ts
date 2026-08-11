@@ -39,10 +39,10 @@ export function kakaoMapRouteUrl(coords: Coords, label = "환자 위치") {
 }
 
 export function buildEmergencyMessage(opts: {
-  name?: string | null;
-  coords?: Coords | null;
-  mapUrl?: string | null;
-  keywords?: string[];
+  name?: string | null | undefined;
+  coords?: Coords | null | undefined;
+  mapUrl?: string | null | undefined;
+  keywords?: string[] | undefined;
 }) {
   const who = opts.name?.trim() ? opts.name.trim() : "보호 대상자";
   const lines = [
