@@ -14,8 +14,8 @@ export const Route = createFileRoute("/api/speech")({
         if (!parsed.success) {
           return Response.json({ error: "잘못된 요청입니다." }, { status: 400 });
         }
-
-        const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
+ // const res = await fetch("https://ai.gateway.lovable.dev/v1/audio/speech", {
+        const res = await fetch("https://api.openai.com/v1/audio/speech", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${apiKey}`,
