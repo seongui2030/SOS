@@ -38,6 +38,78 @@ export type Database = {
         }
         Relationships: []
       }
+      emergency_alerts: {
+        Row: {
+          created_at: string
+          id: string
+          latitude: number | null
+          longitude: number | null
+          map_url: string | null
+          message: string
+          recipient_count: number
+          results: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          map_url?: string | null
+          message: string
+          recipient_count?: number
+          results?: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          latitude?: number | null
+          longitude?: number | null
+          map_url?: string | null
+          message?: string
+          recipient_count?: number
+          results?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
+      emergency_contacts: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: string
+          kakao_uuid: string | null
+          name: string
+          phone: string | null
+          relation: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          kakao_uuid?: string | null
+          name: string
+          phone?: string | null
+          relation: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          kakao_uuid?: string | null
+          name?: string
+          phone?: string | null
+          relation?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       healths: {
         Row: {
           age: number | null
