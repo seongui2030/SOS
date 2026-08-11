@@ -34,6 +34,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { VoiceAssistant, type Turn } from "@/components/VoiceAssistant";
 import { HealthDialog } from "@/components/HealthDialog";
+import { EmergencyDialog } from "@/components/EmergencyDialog";
 import { exportRowsToCsv, exportRowsToPdf, type ExportRow } from "@/lib/export";
 
 
@@ -298,6 +299,8 @@ function ConversationPage() {
             <h1 className="text-xl font-bold tracking-tight text-foreground">말벗 케어</h1>
             <p className="text-xs text-muted-foreground">{titleFor(conversationId)}</p>
           </div>
+
+          <EmergencyDialog userName={userName} />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
