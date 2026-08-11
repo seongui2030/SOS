@@ -13,9 +13,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ApiHealthChatRouteImport } from './routes/api/health-chat'
+import { Route as ApiKakaoAlertRouteImport } from './routes/api/kakao-alert'
 import { Route as ApiSpeechRouteImport } from './routes/api/speech'
 import { Route as ApiTranscribeRouteImport } from './routes/api/transcribe'
 import { Route as AuthenticatedCConversationIdRouteImport } from './routes/_authenticated/c.$conversationId'
+import { Route as ApiPublicMcpRouteImport } from './routes/api/public/mcp'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -36,6 +38,11 @@ const ApiHealthChatRoute = ApiHealthChatRouteImport.update({
   path: '/api/health-chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiKakaoAlertRoute = ApiKakaoAlertRouteImport.update({
+  id: '/api/kakao-alert',
+  path: '/api/kakao-alert',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSpeechRoute = ApiSpeechRouteImport.update({
   id: '/api/speech',
   path: '/api/speech',
@@ -52,22 +59,31 @@ const AuthenticatedCConversationIdRoute =
     path: '/c/$conversationId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicMcpRoute = ApiPublicMcpRouteImport.update({
+  id: '/api/public/mcp',
+  path: '/api/public/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/api/health-chat': typeof ApiHealthChatRoute
+  '/api/kakao-alert': typeof ApiKakaoAlertRoute
   '/api/speech': typeof ApiSpeechRoute
   '/api/transcribe': typeof ApiTranscribeRoute
   '/c/$conversationId': typeof AuthenticatedCConversationIdRoute
+  '/api/public/mcp': typeof ApiPublicMcpRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/api/health-chat': typeof ApiHealthChatRoute
+  '/api/kakao-alert': typeof ApiKakaoAlertRoute
   '/api/speech': typeof ApiSpeechRoute
   '/api/transcribe': typeof ApiTranscribeRoute
   '/c/$conversationId': typeof AuthenticatedCConversationIdRoute
+  '/api/public/mcp': typeof ApiPublicMcpRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -75,9 +91,11 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/api/health-chat': typeof ApiHealthChatRoute
+  '/api/kakao-alert': typeof ApiKakaoAlertRoute
   '/api/speech': typeof ApiSpeechRoute
   '/api/transcribe': typeof ApiTranscribeRoute
   '/_authenticated/c/$conversationId': typeof AuthenticatedCConversationIdRoute
+  '/api/public/mcp': typeof ApiPublicMcpRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -85,26 +103,32 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/api/health-chat'
+    | '/api/kakao-alert'
     | '/api/speech'
     | '/api/transcribe'
     | '/c/$conversationId'
+    | '/api/public/mcp'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/api/health-chat'
+    | '/api/kakao-alert'
     | '/api/speech'
     | '/api/transcribe'
     | '/c/$conversationId'
+    | '/api/public/mcp'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/api/health-chat'
+    | '/api/kakao-alert'
     | '/api/speech'
     | '/api/transcribe'
     | '/_authenticated/c/$conversationId'
+    | '/api/public/mcp'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -112,8 +136,10 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ApiHealthChatRoute: typeof ApiHealthChatRoute
+  ApiKakaoAlertRoute: typeof ApiKakaoAlertRoute
   ApiSpeechRoute: typeof ApiSpeechRoute
   ApiTranscribeRoute: typeof ApiTranscribeRoute
+  ApiPublicMcpRoute: typeof ApiPublicMcpRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -146,6 +172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiHealthChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/kakao-alert': {
+      id: '/api/kakao-alert'
+      path: '/api/kakao-alert'
+      fullPath: '/api/kakao-alert'
+      preLoaderRoute: typeof ApiKakaoAlertRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/speech': {
       id: '/api/speech'
       path: '/api/speech'
@@ -167,6 +200,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCConversationIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/mcp': {
+      id: '/api/public/mcp'
+      path: '/api/public/mcp'
+      fullPath: '/api/public/mcp'
+      preLoaderRoute: typeof ApiPublicMcpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -186,19 +226,11 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ApiHealthChatRoute: ApiHealthChatRoute,
+  ApiKakaoAlertRoute: ApiKakaoAlertRoute,
   ApiSpeechRoute: ApiSpeechRoute,
   ApiTranscribeRoute: ApiTranscribeRoute,
+  ApiPublicMcpRoute: ApiPublicMcpRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { startRecording, type Recorder } from "@/lib/recorder";
 import { detectEmergency } from "@/lib/emergency";
 import { supabase } from "@/integrations/supabase/client";
+import { EmergencyDialog } from "@/components/EmergencyDialog";
 
 export type Turn = {
   id?: string;
@@ -198,6 +199,7 @@ export function VoiceAssistant({ conversationId, userId, initialTurns, onSaved }
                 <PhoneCall className="size-4" /> 119 전화하기
               </a>
             </Button>
+            <EmergencyDialog keywords={emergency} />
             <Button
               variant="outline"
               size="lg"
