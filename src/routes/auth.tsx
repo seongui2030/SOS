@@ -64,9 +64,10 @@ function AuthPage() {
 
     if (!user) return;
 
-    await (supabase.from("users") as unknown as {
+    const table = (supabase.from as unknown as (name: string) => {
       upsert: (values: Record<string, unknown>, options: { onConflict: string }) => Promise<unknown>;
-    }).upsert(
+    })("users");
+    await table.upsert(
       {
         id: user.id,
         email: user.email ?? null,
