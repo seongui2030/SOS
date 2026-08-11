@@ -31,7 +31,7 @@ export const Route = createFileRoute("/api/health-chat")({
           return Response.json({ error: "잘못된 요청입니다." }, { status: 400 });
         }
 
-        const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        const res = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${apiKey}`,
