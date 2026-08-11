@@ -64,16 +64,15 @@ function AuthPage() {
 
     if (!user) return;
 
-    await supabase.from("users").upsert(
+    await (supabase.from("users") as unknown as {
+      upsert: (values: Record<string, unknown>, options: { onConflict: string }) => Promise<unknown>;
+    }).upsert(
       {
         id: user.id,
         email: user.email ?? null,
-        display_name:
-          (user.user_metadata?.full_name as string | undefined) ?? null,
+        display_name: (user.user_metadata?.["full_name"] as string | undefined) ?? null,
       },
-      {
-        onConflict: "id",
-      },
+      { onConflict: "id" },
     );
   };
 
