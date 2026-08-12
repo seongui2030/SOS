@@ -34,7 +34,7 @@ export const Route = createFileRoute("/api/geocode")({
 
         const res = await fetch(api, { headers: { Authorization: `KakaoAK ${restKey}` } });
         if (!res.ok) {
-          return Response.json({ error: "주소 조회에 실패했습니다." }, { status: 502 });
+          { const t = await res.text().catch(() => ""); console.error("kakao geocode fail", res.status, t); return Response.json({ error: "주소 조회에 실패했습니다.", status: res.status }, { status: 502 }); }
         }
         const data = (await res.json()) as KakaoAddress;
         const doc = data.documents?.[0];
