@@ -62,11 +62,13 @@ export function buildEmergencyMessage(opts: {
   coords?: Coords | null | undefined;
   mapUrl?: string | null | undefined;
   keywords?: string[] | undefined;
+  address?: string | null | undefined;
 }) {
   const who = opts.name?.trim() ? opts.name.trim() : "보호 대상자";
   const lines = [
     `🚨 [말벗 케어 응급 알림] ${who}님이 도움을 요청했습니다.`,
     opts.keywords?.length ? `감지된 상황: ${opts.keywords.join(", ")}` : null,
+    opts.address ? `현재 주소: ${opts.address}` : null,
     opts.coords
       ? `현재 위치: 위도 ${opts.coords.latitude.toFixed(6)}, 경도 ${opts.coords.longitude.toFixed(6)}`
       : "현재 위치를 확인하지 못했습니다.",
@@ -74,4 +76,5 @@ export function buildEmergencyMessage(opts: {
     "즉시 연락을 시도하시고, 필요하면 119에 신고해 주세요.",
   ].filter(Boolean);
   return lines.join("\n");
+
 }
