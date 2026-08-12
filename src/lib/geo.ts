@@ -28,6 +28,24 @@ export function getCurrentCoords(timeoutMs = 12000): Promise<Coords> {
   });
 }
 
+export type ResolvedAddress = {
+  jibun: string | null;
+  road: string | null;
+  building: string | null;
+  display: string | null;
+};
+
+/** 좌표를 지번/도로명 주소로 변환합니다 (카카오 로컬 API, 서버 경유). */
+export async function reverseGeocode(coords: Coords): Promise<ResolvedAddress | null> {
+  try {
+    const res = await fetch(`/api/geocode?lat=${coords.latitude}&lng=${coords.longitude}`);
+    if (!res.ok) return null;
+    return (await res.json()) as ResolvedAddress;
+  } catch {
+    return null;
+  }
+}
+
 /** 카카오맵 지도 링크 (map.kakao.com/link/map/이름,위도,경도) */
 export function kakaoMapUrl(coords: Coords, label = "환자 위치") {
   return `https://map.kakao.com/link/map/${encodeURIComponent(label)},${coords.latitude},${coords.longitude}`;
@@ -37,6 +55,7 @@ export function kakaoMapUrl(coords: Coords, label = "환자 위치") {
 export function kakaoMapRouteUrl(coords: Coords, label = "환자 위치") {
   return `https://map.kakao.com/link/to/${encodeURIComponent(label)},${coords.latitude},${coords.longitude}`;
 }
+
 
 export function buildEmergencyMessage(opts: {
   name?: string | null | undefined;
