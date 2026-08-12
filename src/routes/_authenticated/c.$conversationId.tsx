@@ -291,20 +291,24 @@ function ConversationPage() {
   return (
     <main className="min-h-screen bg-background">
       <Toaster position="top-center" />
-      <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col px-5 py-6">
-        <header className="flex items-center gap-3">
+      <div className="mx-auto flex min-h-screen w-full max-w-2xl flex-col px-3 py-4 sm:px-5 sm:py-6">
+        <header className="sticky top-0 z-20 -mx-3 mb-2 flex items-center gap-1.5 border-b border-border/60 bg-background/90 px-3 py-2 backdrop-blur sm:static sm:mx-0 sm:mb-0 sm:gap-3 sm:border-0 sm:bg-transparent sm:px-0 sm:py-0 sm:backdrop-blur-none">
           <HealthDialog />
 
-          <div className="flex-1">
-            <h1 className="text-xl font-bold tracking-tight text-foreground">말벗 케어</h1>
-            <p className="text-xs text-muted-foreground">{titleFor(conversationId)}</p>
+          <div className="min-w-0 flex-1">
+            <h1 className="truncate text-base font-bold tracking-tight text-foreground sm:text-xl">
+              말벗 케어
+            </h1>
+            <p className="truncate text-[11px] text-muted-foreground sm:text-xs">
+              {titleFor(conversationId)}
+            </p>
           </div>
 
           <EmergencyDialog userName={userName} />
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full" aria-label="내 프로필">
+              <Button variant="ghost" size="icon" className="shrink-0 rounded-full" aria-label="내 프로필">
                 <Avatar className="size-8">
                   <AvatarImage src={userAvatar ?? undefined} alt={userName ?? userEmail ?? "사용자"} />
                   <AvatarFallback className="bg-primary/10 text-primary">
@@ -340,10 +344,17 @@ function ConversationPage() {
 
           <Sheet open={panelOpen} onOpenChange={setPanelOpen}>
             <SheetTrigger asChild>
-              <Button variant="secondary" size="lg" className="h-11">
-                <History className="size-4" /> 기록
+              <Button
+                variant="secondary"
+                size="icon"
+                aria-label="대화 기록"
+                className="size-10 shrink-0 rounded-full sm:h-11 sm:w-auto sm:gap-2 sm:rounded-md sm:px-4"
+              >
+                <History className="size-5 sm:size-4" />
+                <span className="hidden sm:inline">기록</span>
               </Button>
             </SheetTrigger>
+
             <SheetContent side="right" className="w-[92vw] max-w-sm gap-0 p-0">
               <SheetHeader className="border-b p-5">
                 <SheetTitle>대화 기록</SheetTitle>
