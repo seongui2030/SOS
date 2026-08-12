@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ApiGeocodeRouteImport } from './routes/api/geocode'
 import { Route as ApiHealthChatRouteImport } from './routes/api/health-chat'
 import { Route as ApiKakaoAlertRouteImport } from './routes/api/kakao-alert'
 import { Route as ApiSpeechRouteImport } from './routes/api/speech'
@@ -31,6 +32,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGeocodeRoute = ApiGeocodeRouteImport.update({
+  id: '/api/geocode',
+  path: '/api/geocode',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiHealthChatRoute = ApiHealthChatRouteImport.update({
@@ -68,6 +74,7 @@ const ApiPublicMcpRoute = ApiPublicMcpRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/api/geocode': typeof ApiGeocodeRoute
   '/api/health-chat': typeof ApiHealthChatRoute
   '/api/kakao-alert': typeof ApiKakaoAlertRoute
   '/api/speech': typeof ApiSpeechRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/api/geocode': typeof ApiGeocodeRoute
   '/api/health-chat': typeof ApiHealthChatRoute
   '/api/kakao-alert': typeof ApiKakaoAlertRoute
   '/api/speech': typeof ApiSpeechRoute
@@ -90,6 +98,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/api/geocode': typeof ApiGeocodeRoute
   '/api/health-chat': typeof ApiHealthChatRoute
   '/api/kakao-alert': typeof ApiKakaoAlertRoute
   '/api/speech': typeof ApiSpeechRoute
@@ -102,6 +111,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/api/geocode'
     | '/api/health-chat'
     | '/api/kakao-alert'
     | '/api/speech'
@@ -112,6 +122,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/api/geocode'
     | '/api/health-chat'
     | '/api/kakao-alert'
     | '/api/speech'
@@ -123,6 +134,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/api/geocode'
     | '/api/health-chat'
     | '/api/kakao-alert'
     | '/api/speech'
@@ -135,6 +147,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ApiGeocodeRoute: typeof ApiGeocodeRoute
   ApiHealthChatRoute: typeof ApiHealthChatRoute
   ApiKakaoAlertRoute: typeof ApiKakaoAlertRoute
   ApiSpeechRoute: typeof ApiSpeechRoute
@@ -163,6 +176,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/geocode': {
+      id: '/api/geocode'
+      path: '/api/geocode'
+      fullPath: '/api/geocode'
+      preLoaderRoute: typeof ApiGeocodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/health-chat': {
@@ -225,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ApiGeocodeRoute: ApiGeocodeRoute,
   ApiHealthChatRoute: ApiHealthChatRoute,
   ApiKakaoAlertRoute: ApiKakaoAlertRoute,
   ApiSpeechRoute: ApiSpeechRoute,
