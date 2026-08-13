@@ -95,7 +95,7 @@ export type Database = {
           phone?: string | null
           relation: string
           updated_at?: string
-          user_id: string
+          user_id?: string
         }
         Update: {
           created_at?: string
