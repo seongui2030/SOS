@@ -160,11 +160,12 @@
   --emergency: oklch(0.66 0.19 25);
   --emergency-foreground: oklch(0.16 0.02 30);
 }
-/* Lovable 배지 숨기기 */
-a[href*="lovable-badge"] {
+/* Lovable 뱃지/워터마크 숨기기 */
+a[href*="lovable.dev"],
+[class*="lovable-badge"],
+div:has(> a[href*="lovable.dev"]) {
   display: none !important;
 }
-
 @layer base {
   body {
     font-family: var(--font-sans);
