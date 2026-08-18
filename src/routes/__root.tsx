@@ -93,6 +93,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
+  export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  head: () => ({
+    meta: [
+      // 기존 meta 항목들...
+    ],
+    links: [
+      {
+        rel: "stylesheet",
+        href: appCss,
+      },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+    ],
+    // 👇 아래 style 구문을 추가해 주세요
+    style: [
+      {
+        children: "a[href*='lovable-badge'] { display: none !important; }",
+      },
+    ],
+  }),
+  shellComponent: RootShell,
+  // ...
+});
   }),
   shellComponent: RootShell,
   component: RootComponent,
