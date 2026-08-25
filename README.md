@@ -1,51 +1,24 @@
-# Health Companion AI
+# 긴급출동 비서
 
-AI 보조 모델의 역할
+이 책은 고등학생이 React와 Vite로 웹 애플리케이션을 만들고, Supabase로 회원과 데이터를 관리하며, Vercel에 배포하는 전 과정을 따라 하는 실습형 정보 교재이다. 예제는 실제 `SOS` 프로젝트의 구조와 코드를 바탕으로 한다.
 
-활용 모델 : GPT-4o
+독자는 여섯 단원을 거치며 다음 능력을 기른다.
 
- 사용자의 음성을 STT로 텍스트 변환한다.
+- React 컴포넌트와 Vite 개발 서버의 역할을 설명한다.
+- 환경변수와 공개 키·비밀 키의 차이를 구분한다.
+- Google OAuth와 이메일·비밀번호 인증 흐름을 구현한다.
+- 관계형 데이터베이스의 기본 키, 외래 키, 인덱스, 트리거를 이해한다.
+- Supabase RLS로 사용자별 데이터 접근을 제한한다.
+- GitHub 저장소를 Vercel에 연결하고 운영 환경을 점검한다.
+- VS Code의 Codex와 협력하면서 변경 사항을 검토하고 안전하게 개발한다.
 
- GPT-4o가 사용자의 건강 관련 질문을 이해한다.
+이 책의 코드는 학습용 예시이다. 실제 서비스에서는 비밀번호, 서비스 역할 키, API 비밀 키를 GitHub에 올리지 말아야 한다. 건강 및 긴급 상황 기능은 전문 의료·구조 기관을 대신하지 않는다.
 
- 건강관리 방법 및 복약 정보를 생성한다.
+## 권장 학습 방법
 
- 생성된 답변을 TTS를 통해 음성으로 제공한다.
+각 페이지는 `학습 목표 → 개념 → 실습 → 확인 문제` 순서로 읽는다. 명령은 프로젝트 폴더에서 한 줄씩 실행하고, 오류가 나면 오류 문장의 첫 줄부터 읽는다. AI가 만든 코드는 바로 믿지 말고 `git diff`, TypeScript 검사, 브라우저 개발자 도구로 확인한다.
 
- 응급상황 키워드를 인식하여 도움 요청 기능을 수행한다.
+## 기준 개발환경
 
-AI 서비스 흐름
+이 교재는 2026년 8월의 SOS 프로젝트를 기준으로 한다. 주요 구성은 React 19, Vite 8, TypeScript 5.8, TanStack Start, Supabase JavaScript 2, Nitro의 Vercel 프리셋이다. 서비스 화면이나 패키지 버전은 시간이 지나면 달라질 수 있으므로 공식 문서도 함께 확인한다.
 
-음성 입력 → STT → GPT-4o → 답변 생성 → TTS → 음성 출력
-
-선정 이유
-
- OpenAI API 활용이 가능하다.
-
- 과정 안내서의 교육내용(STT, TTS, GPT, MCP 연동)과 가장 잘 부합한다.
-
- 실제 AI 비서앱 구현 사례와 유사하여 확장성이 높다.
-
-수행평가용으로는 "GPT-4o를 핵심 AI 모델로 사용하고, STT와 TTS를 결합한 음성 건강관리 AI 비서" 
-"위의 설계서 대로 웹앱 완성해줘"
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/11eb99f7-86bf-4610-92cd-949bad326645).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
