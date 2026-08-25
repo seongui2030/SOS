@@ -1,6 +1,6 @@
-# 06-2. 운영 환경변수와 OAuth 주소
+## 06-2. 운영 환경변수와 OAuth 주소
 
-## Vercel 환경변수
+### Vercel 환경변수
 
 Project Settings → Environment Variables에서 Key와 Value를 분리해 입력한다.
 
@@ -18,7 +18,7 @@ Project Settings → Environment Variables에서 Key와 Value를 분리해 입�
 
 저장 후 새 Production 배포를 실행한다. Vite의 `VITE_` 값은 빌드 결과에 들어가므로 재배포가 특히 중요하다. 브라우저에서는 Ctrl+Shift+R로 캐시를 무시하고 새로고침한다.
 
-## 운영 주소 동기화 표
+### 운영 주소 동기화 표
 
 | 서비스 | 설정 |
 |---|---|
@@ -29,7 +29,7 @@ Project Settings → Environment Variables에서 Key와 Value를 분리해 입�
 | Google redirect URI | Supabase callback |
 | Kakao JS 도메인 | 실제 운영 원본 |
 
-## 운영에서 환경변수 누락 오류가 날 때
+### 운영에서 환경변수 누락 오류가 날 때
 
 브라우저 Console의 `Missing Supabase environment variable(s)`는 빌드 때 VITE 변수를 못 읽었다는 뜻이다. 변수 목록에 이름이 보이는 것만으로 충분하지 않다.
 
@@ -40,7 +40,7 @@ Project Settings → Environment Variables에서 Key와 Value를 분리해 입�
 5. 캐시 없이 새 Production 배포를 만든다.
 6. 새 배포가 연결된 도메인인지 확인한다.
 
-## 배포 보안 점검
+### 배포 보안 점검
 
 - service role key가 `VITE_`로 시작하지 않는다.
 - `.env.local`은 Git에 없다.

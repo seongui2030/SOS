@@ -1,6 +1,6 @@
-# 06-1. GitHub와 Vercel 배포
+## 06-1. GitHub와 Vercel 배포
 
-## Git 상태 정리
+### Git 상태 정리
 
 ```powershell
 git status
@@ -20,7 +20,7 @@ git push origin main
 
 스테이징 후 다시 `git status`를 읽고 의도한 파일만 있는지 본다. 이미 원격에 공개한 커밋을 force push나 rebase로 다시 쓰지 않는다. 협업 기록과 연결 서비스의 동기화가 깨질 수 있다.
 
-## Vercel New Project
+### Vercel New Project
 
 1. Vercel에 로그인한다.
 2. GitHub 저장소를 Import한다.
@@ -39,7 +39,7 @@ nitro({
 
 따라서 서버 라우트까지 Vercel 함수 형식으로 빌드할 수 있다. 빌드 로그의 `You can preview this build`는 빌드가 생성되었다는 안내이며 오류가 아니다.
 
-## 배포 결과 확인
+### 배포 결과 확인
 
 Vercel이 제공한 실제 도메인을 기록한다. 예제 프로젝트의 주소는 `https://sos-nu-flame.vercel.app`이다. 예전에 예상했던 다른 도메인을 Google, Supabase, Kakao에 등록해 두면 로그인 후 잘못된 곳으로 이동한다.
 
@@ -51,7 +51,7 @@ Vercel이 제공한 실제 도메인을 기록한다. 예제 프로젝트의 주
 - API 요청이 500 없이 응답한다.
 - 모바일 화면과 HTTPS 권한 요청이 작동한다.
 
-## 실패 시 로그
+### 실패 시 로그
 
 Build Logs는 TypeScript, 패키지, 빌드 오류를 보여 준다. Runtime/Function Logs는 배포 후 API 500의 원인을 보여 준다. 브라우저 Network의 요청과 같은 시각의 서버 로그를 함께 본다.
 

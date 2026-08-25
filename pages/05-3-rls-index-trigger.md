@@ -1,6 +1,6 @@
-# 05-3. RLS·인덱스·트리거
+## 05-3. RLS·인덱스·트리거
 
-## RLS 켜기
+### RLS 켜기
 
 ```sql
 ALTER TABLE public.conversations ENABLE ROW LEVEL SECURITY;
@@ -36,7 +36,7 @@ WITH CHECK (auth.uid() = user_id);
 
 이 경우 사용자는 자기 알림을 조회·추가하지만 수정·삭제는 하지 못한다.
 
-## 인덱스
+### 인덱스
 
 책의 찾아보기처럼 검색 위치를 빠르게 찾게 한다.
 
@@ -47,7 +47,7 @@ ON public.conversations (user_id, updated_at DESC);
 
 사용자별 최신 대화를 찾는 질의에 맞는다. 모든 열에 인덱스를 만들면 저장할 때마다 인덱스도 갱신되어 느려지고 공간을 쓴다. 실제 자주 쓰는 조건과 정렬에 맞춰 만든다.
 
-## 트리거
+### 트리거
 
 트리거는 특정 사건이 일어나면 자동 실행되는 DB 규칙이다.
 
@@ -72,7 +72,7 @@ FOR EACH ROW EXECUTE FUNCTION public.touch_conversation();
 
 새 메시지가 생기면 해당 대화의 수정 시각을 바꾼다. 앱의 모든 입력 경로에서 같은 규칙이 적용되는 장점이 있다. 잘못 만든 트리거는 숨어서 많은 변경을 일으킬 수 있으므로 함수와 실행 시점을 문서화한다.
 
-## RLS 점검
+### RLS 점검
 
 Supabase Dashboard의 Database → Policies 또는 Table Editor의 Policies에서 확인한다. 여섯 테이블 모두 RLS가 Enabled인지, 정책 대상이 `authenticated`인지, 소유권 식이 맞는지 본다.
 

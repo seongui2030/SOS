@@ -1,6 +1,6 @@
-# 04-2. 회원가입과 로그인 코드
+## 04-2. 회원가입과 로그인 코드
 
-## 입력 상태
+### 입력 상태
 
 ```tsx
 const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -11,7 +11,7 @@ const [loading, setLoading] = useState(false);
 
 `mode`가 화면의 목적을 정하고, 입력값은 state에 저장된다. `loading` 중 버튼을 막아 같은 요청이 여러 번 전송되는 것을 줄인다.
 
-## 완성된 분기 구조
+### 완성된 분기 구조
 
 ```tsx
 try {
@@ -61,7 +61,7 @@ try {
 
 `try`는 실패할 수 있는 영역, `catch`는 오류 안내, `finally`는 성공·실패와 관계없이 로딩을 해제한다. `try`만 쓰고 `catch`나 `finally`가 없으면 문법 오류다.
 
-## 입력 폼
+### 입력 폼
 
 ```tsx
 <form onSubmit={submit}>
@@ -86,7 +86,7 @@ try {
 
 `onSubmit`을 사용하면 버튼 클릭뿐 아니라 Enter 키도 작동한다. 함수 첫 줄의 `event.preventDefault()`는 브라우저의 기본 새로고침 제출을 막는다.
 
-## 실습 시험
+### 실습 시험
 
 - 새 이메일 가입: 인증 안내가 나오는가?
 - 인증 전 로그인: 이해 가능한 오류가 나오는가?

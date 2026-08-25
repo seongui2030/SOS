@@ -1,6 +1,6 @@
-# 03. Google 계정으로 계속하기
+## 03. Google 계정으로 계속하기
 
-## 학습 목표
+### 학습 목표
 
 - OAuth에서 앱, Supabase, Google, 브라우저의 역할을 구분한다.
 - 승인된 출처와 리디렉션 URI를 올바르게 등록한다.
@@ -19,7 +19,7 @@ SOS 로그인 버튼
 
 이처럼 여러 서비스가 이동하므로 주소 하나만 달라도 실패한다. 특히 Google에 등록하는 콜백은 앱 주소가 아니라 Supabase 콜백 주소다. 앱 주소는 Supabase의 Site URL과 Redirect URLs에 등록한다.
 
-## 필요한 네 가지 설정
+### 필요한 네 가지 설정
 
 1. Google Cloud에서 프로젝트와 OAuth 동의 화면을 준비한다.
 2. 웹 애플리케이션 OAuth 클라이언트를 만든다.
@@ -36,7 +36,7 @@ Supabase 콜백: https://YOUR_PROJECT_REF.supabase.co/auth/v1/callback
 
 주소는 프로토콜, 도메인, 포트, 경로까지 비교한다. `http`와 `https`, 8080과 3000은 서로 다른 주소다.
 
-## 확인 문제
+### 확인 문제
 
 1. SOS 앱이 Google 비밀번호를 직접 저장하지 않는 이유는 무엇인가?
 2. Google에 등록할 콜백 주소는 어느 서비스의 주소인가?
