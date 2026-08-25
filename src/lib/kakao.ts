@@ -1,6 +1,6 @@
 /** 카카오 JavaScript SDK 로더 및 로그인/공유 헬퍼 (클라이언트 전용) */
 
-export const KAKAO_JS_KEY = "06cc2aaf22022bd20f8e654a6213dd43";
+export const KAKAO_JS_KEY = "cd076f49b4c2419ed5dd8f416d227f22";
 
 type KakaoSDK = {
   isInitialized: () => boolean;

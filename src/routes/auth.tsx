@@ -84,19 +84,26 @@ function AuthPage() {
 
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: `${window.location.origin}/auth`,
           },
         });
 
         if (error) throw error;
 
+        if (!data.session) {
+          toast.success(
+            "가입되었습니다. 받은 이메일에서 인증 링크를 눌러주세요.",
+          );
+          return;
+        }
+
         await recordUser();
 
-        toast.success("가입이 완료되었습니다.");
+        toast.success("가입과 로그인이 완료되었습니다.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
