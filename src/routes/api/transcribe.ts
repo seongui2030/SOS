@@ -1,11 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
+const apiKey = process.env["OPENAI_API_KEY"];
 
 export const Route = createFileRoute("/api/transcribe")({
   server: {
     handlers: {
       POST: async ({ request }) => {
         const apiKey = process.env["OPENAI_API_KEY"];
-        if (!apiKey) return new Response("Missing LOVABLE_API_KEY", { status: 500 });
+        if (!apiKey) {
+  return Response.json(
+    { error: "OPENAI_API_KEY가 설정되지 않았습니다." },
+    { status: 500 },
+  );
+}
 
         const form = await request.formData();
         const file = form.get("file");
@@ -20,7 +26,7 @@ export const Route = createFileRoute("/api/transcribe")({
         }
 
         const upstream = new FormData();
-        upstream.append("model", "openai/gpt-4o-transcribe");
+        upstream.append("model", "gpt-4o-transcribe");
         upstream.append("file", file, "recording.wav");
 
         const res = await fetch("https://api.openai.com/v1/audio/transcriptions", {
