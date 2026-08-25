@@ -33,3 +33,5 @@ dist-ssr
 # .env
 .env
 .env.local
+# Vercel local files and build output
+.vercel/
