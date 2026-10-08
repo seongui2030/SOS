@@ -50,32 +50,34 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    void supabase.auth.getSession().then(({ data }) => {
-      if (data.session) {
-        void navigate({ to: "/" });
-      }
-    });
-  }, [navigate]);
-
   const recordUser = async () => {
     const { data } = await supabase.auth.getUser();
     const user = data.user;
-
     if (!user) return;
-
-    const table = (supabase.from as unknown as (name: string) => {
-      upsert: (values: Record<string, unknown>, options: { onConflict: string }) => Promise<unknown>;
-    })("users");
-    await table.upsert(
+    const { error } = await supabase.from("users").upsert(
       {
         id: user.id,
         email: user.email ?? null,
-        display_name: (user.user_metadata?.["full_name"] as string | undefined) ?? null,
+        display_name:
+          (user.user_metadata?.["full_name"] as string | undefined) ??
+          (user.user_metadata?.["name"] as string | undefined) ??
+          null,
+        updated_at: new Date().toISOString(),
       },
       { onConflict: "id" },
     );
+    if (error) console.error("users upsert failed", error);
   };
+
+  useEffect(() => {
+    void supabase.auth.getSession().then(async ({ data }) => {
+      if (data.session) {
+        await recordUser();
+        void navigate({ to: "/" });
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [navigate]);
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();

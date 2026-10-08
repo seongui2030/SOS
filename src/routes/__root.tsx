@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import type { ErrorComponentProps } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
 
@@ -93,8 +94,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
+  errorComponent: RootErrorComponent,
 });
+
+function RootErrorComponent(props: ErrorComponentProps) {
+  return <ErrorComponent error={props.error as Error} reset={props.reset} />;
+}
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
