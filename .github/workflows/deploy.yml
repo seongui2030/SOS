@@ -33,6 +33,8 @@ jobs:
         env:
           VITE_KAKAO_JAVASCRIPT_KEY: ${{ secrets.VITE_KAKAO_JAVASCRIPT_KEY }}
           VITE_KAKAO_REST_API_KEY: ${{ secrets.VITE_KAKAO_REST_API_KEY }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
         run: npm run build
 
       # 5. TanStack Start / Nitro 정적 파일 경로 자동 감지
