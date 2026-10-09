@@ -36,3 +36,5 @@ dist-ssr
 .env.*
 # Vercel local files and build output
 .vercel/
+# 환경변수 템플릿은 공개해도 되므로 커밋 허용
+!.env.example
